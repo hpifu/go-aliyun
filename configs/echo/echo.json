@@ -1,0 +1,30 @@
+{
+    "service": {
+        "port": ":7060",
+        "allowOrigins": [
+            "https://echo.hatlonely.com"
+        ],
+        "cookieSecure": true,
+        "cookieDomain": "echo.hatlonely.com"
+    },
+    "es": {
+        "uri": "http://elasticsearch:9200"
+    },
+    "logger": {
+        "info": {
+            "formatter": "text",
+            "filename": "log/echo.info",
+            "maxAge": "24h"
+        },
+        "warn": {
+            "formatter": "text",
+            "filename": "log/echo.warn",
+            "maxAge": "24h"
+        },
+        "access": {
+            "formatter": "json",
+            "filename": "log/echo.access",
+            "maxAge": "24h"
+        }
+    }
+}
