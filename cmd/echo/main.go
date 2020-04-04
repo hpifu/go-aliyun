@@ -5,6 +5,9 @@ import (
 	"fmt"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+	"github.com/hpifu/go-aliyun/internal/service"
+	"github.com/hpifu/go-aliyun/internal/service/credential"
+	"github.com/hpifu/go-aliyun/internal/service/imm"
 	"github.com/hpifu/go-kit/hconf"
 	"github.com/hpifu/go-kit/hdef"
 	"github.com/hpifu/go-kit/henv"
@@ -12,7 +15,6 @@ import (
 	"github.com/hpifu/go-kit/hhttp"
 	"github.com/hpifu/go-kit/hrule"
 	"github.com/hpifu/go-kit/logger"
-	"github.com/hpifu/go-aliyun/internal/service"
 	rotatelogs "github.com/lestrrat-go/file-rotatelogs"
 	"github.com/olivere/elastic/v7"
 	"github.com/sirupsen/logrus"
@@ -33,6 +35,14 @@ type Options struct {
 		AllowOrigins []string `hflag:"usage: allow origins" hdef:"127.0.0.1"`
 		CookieSecure bool     `hflag:"usage: http or https"`
 		CookieDomain string   `hflag:"usage: cookie domain"`
+	}
+	Store struct {
+		Credential struct {
+			Root string `hflag:"usage: root" hdef:"data/credential"`
+		}
+		Request struct {
+			Root string `hflag:"usage: root" hdef:"data/request"`
+		}
 	}
 	Es struct {
 		Uri string `hflag:"usage: elasticsearch address"`
@@ -104,8 +114,11 @@ func main() {
 	accessLog.Hooks.Add(hook)
 
 	// init services
-	svc := service.NewService(options.Service.CookieSecure, options.Service.CookieDomain)
-	svc.SetLogger(infoLog, warnLog, accessLog)
+	credentialService, err := credential.NewService(options.Store.Credential.Root)
+	if err != nil {
+		panic(err)
+	}
+	immService, err := imm.NewService(options.Store.Request.Root)
 
 	// init gin
 	gin.SetMode(gin.ReleaseMode)
@@ -123,7 +136,10 @@ func main() {
 	r.GET("/ping", func(ctx *gin.Context) {
 		ctx.String(200, "ok")
 	})
-	r.GET("/echo", d.Decorate(svc.Echo))
+	r.GET("/credential", d.Decorate(credentialService.GETCredential))
+	r.POST("/credential", d.Decorate(credentialService.POSTCredential))
+	r.DELETE("/credential", d.Decorate(credentialService.DELETECredential))
+	r.POST("/imm", d.Decorate(immService.IMM))
 
 	infoLog.Infof("%v init success, port [%v]", os.Args[0], options.Service.Port)
 
