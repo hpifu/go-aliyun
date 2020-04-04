@@ -38,7 +38,7 @@ type Options struct {
 			Root string `hflag:"usage: root" hdef:"data/credential"`
 		}
 		Request struct {
-			Root string `hflag:"usage: root" hdef:"data/request"`
+			Root string `hflag:"usage: root" hdef:"data/parameter"`
 		}
 	}
 	//Es struct {

@@ -128,7 +128,7 @@ func (s *Service) IMM(rid string, c *gin.Context) (interface{}, interface{}, int
 
 	res, err := imm(req.Endpoint, req.Params, credential)
 	if err != nil {
-		return nil, nil, http.StatusBadRequest, fmt.Errorf("imm request failed. err: [%v]", err)
+		return nil, nil, http.StatusBadRequest, fmt.Errorf("imm parameter failed. err: [%v]", err)
 	}
 
 	return req, string(res), http.StatusOK, nil
