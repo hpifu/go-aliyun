@@ -1,4 +1,4 @@
-package service
+package imm
 
 import (
 	"context"
@@ -18,6 +18,7 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/hpifu/go-aliyun/internal/store"
 )
 
 func PercentEncode(str string) string {
@@ -69,7 +70,9 @@ func MakePopParams(methods string, params map[string]string, accessKeyID string,
 	return params
 }
 
-func imm(endpoint string, params map[string]string) ([]byte, error) {
+func imm(endpoint string, params map[string]string, credential *store.Credential) ([]byte, error) {
+	params = MakePopParams("POST", params, credential.AccessKeyID, credential.AccessKeySecret)
+
 	client := &http.Client{
 		Transport: &http.Transport{
 			DialContext: func(ctx context.Context, netw, addr string) (net.Conn, error) {
@@ -112,14 +115,21 @@ type IMMReq struct {
 }
 
 func (s *Service) IMM(rid string, c *gin.Context) (interface{}, interface{}, int, error) {
-	params := map[string]string{}
-	for k, v := range c.Request.URL.Query() {
-		params[k] = v[0]
+	req := &IMMReq{}
+
+	if err := c.Bind(req); err != nil {
+		return nil, nil, http.StatusBadRequest, fmt.Errorf("bind failed. err: [%v]", err)
 	}
 
-	//imm()
+	credential, err := s.cs.Get(req.Credential)
+	if err != nil {
+		return nil, nil, http.StatusBadRequest, fmt.Errorf("get credential failed. err: [%v]", err)
+	}
 
-	return req, &EchoRes{
-		Message: req.Message,
-	}, http.StatusOK, nil
+	res, err := imm(req.Endpoint, req.Params, credential)
+	if err != nil {
+		return nil, nil, http.StatusBadRequest, fmt.Errorf("imm request failed. err: [%v]", err)
+	}
+
+	return req, string(res), http.StatusOK, nil
 }
