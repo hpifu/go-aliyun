@@ -12,6 +12,7 @@ import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/hpifu/go-aliyun/internal/service/credential"
+	"github.com/hpifu/go-aliyun/internal/service/endpoint"
 	"github.com/hpifu/go-aliyun/internal/service/imm"
 	"github.com/hpifu/go-aliyun/internal/service/parameter"
 	"github.com/hpifu/go-kit/hconf"
@@ -36,15 +37,15 @@ type Options struct {
 	}
 	Store struct {
 		Credential struct {
-			Root string `hflag:"usage: root" hdef:"data/credential"`
+			Root string `hflag:"usage: credential root" hdef:"data/credential"`
 		}
 		Parameter struct {
-			Root string `hflag:"usage: root" hdef:"data/parameter"`
+			Root string `hflag:"usage: parameter root" hdef:"data/parameter"`
+		}
+		Endpoint struct {
+			Root string `hflag:"usage: endpoint root" hdef:"data/endpoint"`
 		}
 	}
-	//Es struct {
-	//	Uri string `hflag:"usage: elasticsearch address"`
-	//}
 	Logger struct {
 		Info   logger.Options
 		Warn   logger.Options
@@ -98,18 +99,6 @@ func main() {
 	infoLog := logs[0]
 	warnLog := logs[1]
 	accessLog := logs[2]
-	//client, err := elastic.NewClient(
-	//	elastic.SetURL(options.Es.Uri),
-	//	elastic.SetSniff(false),
-	//)
-	//if err != nil {
-	//	panic(err)
-	//}
-	//hook, err := elogrus.NewAsyncElasticHook(client, "go-aliyun", logrus.InfoLevel, "go-aliyun-log")
-	//if err != nil {
-	//	panic(err)
-	//}
-	//accessLog.Hooks.Add(hook)
 
 	// init services
 	credentialService, err := credential.NewService(options.Store.Credential.Root)
@@ -121,6 +110,10 @@ func main() {
 		panic(err)
 	}
 	parameterService, err := parameter.NewService(options.Store.Parameter.Root)
+	if err != nil {
+		panic(err)
+	}
+	endpointService, err := endpoint.NewService(options.Store.Endpoint.Root)
 	if err != nil {
 		panic(err)
 	}
@@ -150,6 +143,10 @@ func main() {
 	r.GET("/parameter/:category/:subCategory/:filename", d.Decorate(parameterService.GETParameter))
 	r.POST("/parameter/:category/:subCategory", d.Decorate(parameterService.POSTParameter))
 	r.DELETE("/parameter/:category/:subCategory/:filename", d.Decorate(parameterService.DELETECredential))
+
+	r.GET("/endpoint/:category", d.Decorate(endpointService.GETEndpoints))
+	r.POST("/endpoint/:category", d.Decorate(endpointService.POSTEndpoint))
+	r.DELETE("/endpoint/:category", d.Decorate(endpointService.DELETEEndpoint))
 
 	r.POST("/imm", d.Decorate(immService.IMM))
 
