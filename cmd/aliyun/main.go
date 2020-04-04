@@ -53,7 +53,7 @@ type Options struct {
 
 func main() {
 	version := hflag.Bool("v", false, "print current version")
-	configfile := hflag.String("c", "configs/echo.json", "config file path")
+	configfile := hflag.String("c", "configs/aliyun.json", "config file path")
 	if err := hflag.Bind(&Options{}); err != nil {
 		panic(err)
 	}

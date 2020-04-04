@@ -42,7 +42,7 @@ def wait_for_port(port, host="localhost", timeout=5.0):
 
 
 def deploy():
-    fp = open("{}/configs/echo.json".format(config["prefix"]))
+    fp = open("{}/configs/aliyun.json".format(config["prefix"]))
     cf = json.loads(fp.read())
     fp.close()
     cf["service"]["port"] = ":{}".format(config["service"]["port"])
@@ -50,14 +50,14 @@ def deploy():
     cf["service"]["cookieDomain"] = config["service"]["cookieDomain"]
     cf["service"]["allowOrigins"] = config["service"]["allowOrigins"]
     print(cf)
-    fp = open("{}/configs/echo.json".format(config["prefix"]), "w")
+    fp = open("{}/configs/aliyun.json".format(config["prefix"]), "w")
     fp.write(json.dumps(cf, indent=4))
     fp.close()
 
 
 def start():
     subprocess.Popen(
-        "cd {} && nohup bin/echo &".format(config["prefix"]),  shell=True
+        "cd {} && nohup bin/aliyun &".format(config["prefix"]),  shell=True
     )
 
     wait_for_port(config["service"]["port"], timeout=5)
@@ -65,7 +65,7 @@ def start():
 
 def stop():
     subprocess.getstatusoutput(
-        "ps aux | grep bin/echo | grep -v grep | awk '{print $2}' | xargs kill"
+        "ps aux | grep bin/aliyun | grep -v grep | awk '{print $2}' | xargs kill"
     )
 
 
