@@ -17,30 +17,13 @@ register_type(bool=lambda x: True if x == "true" else False)
 
 
 config = {
-    "prefix": "output/tpl-go-http",
+    "prefix": "output/go-aliyun",
     "service": {
         "port": 17060,
         "cookieSecure": False,
         "allowOrigins": ["http://127.0.0.1:4000"],
         "cookieDomain": "127.0.0.1"
     },
-    "es": {
-        "uri": "http://test-elasticsearch:9200"
-    },
-    "api": {
-        "account": "test-go-account:16060",
-    },
-    "mysqldb": {
-        "host": "test-mysql",
-        "port": 3306,
-        "user": "hatlonely",
-        "password": "keaiduo1",
-        "db": "hads"
-    },
-    "redis": {
-        "host": "test-redis",
-        "port": 6379
-    }
 }
 
 
@@ -66,15 +49,6 @@ def deploy():
     cf["service"]["cookieSecure"] = config["service"]["cookieSecure"]
     cf["service"]["cookieDomain"] = config["service"]["cookieDomain"]
     cf["service"]["allowOrigins"] = config["service"]["allowOrigins"]
-    cf["es"]["uri"] = config["es"]["uri"]
-    # cf["api"]["account"] = config["api"]["account"]
-    # cf["mysqldb"]["uri"] = "{user}:{password}@tcp({host}:{port})/{db}?charset=utf8&parseTime=True&loc=Local".format(
-    #     user=config["mysqldb"]["user"],
-    #     password=config["mysqldb"]["password"],
-    #     db=config["mysqldb"]["db"],
-    #     host=config["mysqldb"]["host"],
-    #     port=config["mysqldb"]["port"],
-    # )
     print(cf)
     fp = open("{}/configs/echo.json".format(config["prefix"]), "w")
     fp.write(json.dumps(cf, indent=4))
@@ -100,18 +74,6 @@ def before_all(context):
     deploy()
     start()
     context.config = config
-    context.mysql_conn = pymysql.connect(
-        host=config["mysqldb"]["host"],
-        user=config["mysqldb"]["user"],
-        port=config["mysqldb"]["port"],
-        password=config["mysqldb"]["password"],
-        db=config["mysqldb"]["db"],
-        charset="utf8",
-        cursorclass=pymysql.cursors.DictCursor
-    )
-    context.redis_client = redis.Redis(
-        config["redis"]["host"], port=6379, db=0
-    )
 
 
 def after_all(context):

@@ -1,4 +1,4 @@
-binary=echo
+binary=aliyun
 dockeruser=hatlonely
 gituser=hpifu
 repository=go-aliyun
