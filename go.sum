@@ -137,6 +137,8 @@ github.com/hpifu/go-kit v1.7.7-0.20191217184605-f0969e951d89 h1:vt3O1/D0hAiboH/d
 github.com/hpifu/go-kit v1.7.7-0.20191217184605-f0969e951d89/go.mod h1:FMFjkN7sE8qQ6dXgpl3VN/s0lL7ZCai8S8a4ChC7QMg=
 github.com/hpifu/go-kit v1.8.1 h1:EsS0yMd8vmQjI4eWRiIMO58R7VdnEaRqkrCpEISFJRw=
 github.com/hpifu/go-kit v1.8.1/go.mod h1:nihVsJUu1q2fiGYt1QBGimry0NbRMOhrCM5yX4+leH0=
+github.com/hpifu/go-kit v1.8.2 h1:2Ke70FlQElccHrbBTF4aNQ9uuF17nriSEAzr+5b8/l0=
+github.com/hpifu/go-kit v1.8.2/go.mod h1:nihVsJUu1q2fiGYt1QBGimry0NbRMOhrCM5yX4+leH0=
 github.com/hpifu/tpl-go-http v0.0.0-20191217185058-b043335d80db h1:U+gZGqArxnSZqZ3UyG9Y0MPmaxjdos+Koid9PSSDucA=
 github.com/hpifu/tpl-go-http v0.0.0-20191217185058-b043335d80db/go.mod h1:Gd1cKrylxnzqRSV1pLp5ypiW17UA5mfY8DLBbNCOyw8=
 github.com/jehiah/go-strftime v0.0.0-20171201141054-1d33003b3869/go.mod h1:cJ6Cj7dQo+O6GJNiMx+Pa94qKj+TG8ONdKHgMNIyyag=

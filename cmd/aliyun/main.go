@@ -136,9 +136,10 @@ func main() {
 	r.GET("/ping", func(ctx *gin.Context) {
 		ctx.String(200, "ok")
 	})
+	r.GET("/credential", d.Decorate(credentialService.GETCredentials))
 	r.GET("/credential/:filename", d.Decorate(credentialService.GETCredential))
 	r.POST("/credential", d.Decorate(credentialService.POSTCredential))
-	r.DELETE("/credential", d.Decorate(credentialService.DELETECredential))
+	r.DELETE("/credential/:filename", d.Decorate(credentialService.DELETECredential))
 	r.POST("/imm", d.Decorate(immService.IMM))
 
 	infoLog.Infof("%v init success, port [%v]", os.Args[0], options.Service.Port)

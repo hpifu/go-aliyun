@@ -1,6 +1,6 @@
-Feature: echo 测试
+Feature: credential 测试
 
-    Scenario: echo
+    Scenario: credential
         When http 请求 POST /credential
             """
             {
@@ -16,7 +16,20 @@ Feature: echo 测试
         Then http 检查 200
             """
             {
-                "accessKeyID": "9ede1245e77c06df5b",
-                "accessKeySecret": "36ae8f74164a5af0f66b9c25a6146583"
+                "json": {
+                    "accessKeyID": "9ede1245e77c06df5b",
+                    "accessKeySecret": "36ae8f74164a5af0f66b9c25a6146583"
+                }
             }
             """
+        When http 请求 GET /credential
+        Then http 检查 200
+            """
+            {
+                "json": [
+                    "test1"
+                ]
+            }
+            """
+        When http 请求 DELETE /credential/test1
+        Then http 检查 202

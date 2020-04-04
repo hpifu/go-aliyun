@@ -83,7 +83,7 @@ func (f *FileStore) Del(filename string) error {
 	if err != nil {
 		return err
 	}
-	return os.RemoveAll(path)
+	return os.Remove(path)
 }
 
 func (f *FileStore) List(subDir string) ([]string, error) {
