@@ -57,9 +57,9 @@ func (cs *FileStore) Del(filename string) error {
 	return os.RemoveAll(filepath.Join(cs.root, filename))
 }
 
-func (cs *FileStore) List() ([]string, error) {
+func (cs *FileStore) List(subDir string) ([]string, error) {
 	var fns []string
-	infos, err := ioutil.ReadDir(cs.root)
+	infos, err := ioutil.ReadDir(filepath.Join(cs.root, subDir))
 	if err != nil {
 		return nil, err
 	}

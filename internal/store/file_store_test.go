@@ -27,7 +27,7 @@ func TestFileStore(t *testing.T) {
 		})
 
 		Convey("test list", func() {
-			fns, err := cs.List()
+			fns, err := cs.List("")
 			So(err, ShouldBeNil)
 			So(fns, ShouldResemble, []string{"test1"})
 		})

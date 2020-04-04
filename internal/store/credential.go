@@ -1,9 +1,5 @@
 package store
 
-import (
-	"os"
-)
-
 type Credential struct {
 	AccessKeyID     string `json:"accessKeyID"`
 	AccessKeySecret string `json:"accessKeySecret"`
@@ -14,9 +10,6 @@ type CredentialStore struct {
 }
 
 func NewCredentialStore(root string) (*CredentialStore, error) {
-	if err := os.MkdirAll(root, 0755); err != nil {
-		return nil, err
-	}
 	store, err := NewFileStore(root)
 	if err != nil {
 		return nil, err
@@ -46,5 +39,5 @@ func (cs *CredentialStore) Del(filename string) error {
 }
 
 func (cs *CredentialStore) List() ([]string, error) {
-	return cs.store.List()
+	return cs.store.List("")
 }
