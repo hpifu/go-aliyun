@@ -14,7 +14,7 @@ type GETCredentialReq struct {
 func (s *Service) GETCredential(rid string, c *gin.Context) (interface{}, interface{}, int, error) {
 	req := &GETCredentialReq{}
 
-	if err := c.Bind(req); err != nil {
+	if err := c.BindUri(req); err != nil {
 		return nil, nil, http.StatusBadRequest, fmt.Errorf("bind failed. err: [%v]", err)
 	}
 
