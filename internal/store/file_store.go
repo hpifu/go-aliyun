@@ -3,9 +3,11 @@ package store
 import (
 	"bufio"
 	"encoding/json"
+	"errors"
 	"io/ioutil"
 	"os"
 	"path/filepath"
+	"strings"
 )
 
 type FileStore struct {
@@ -16,13 +18,32 @@ func NewFileStore(root string) (*FileStore, error) {
 	if err := os.MkdirAll(root, 0755); err != nil {
 		return nil, err
 	}
+	abs, err := filepath.Abs(root)
+	if err != nil {
+		return nil, err
+	}
 	return &FileStore{
-		root: root,
+		root: abs,
 	}, nil
 }
 
-func (cs *FileStore) Put(filename string, v interface{}) error {
-	fp, err := os.OpenFile(filepath.Join(cs.root, filename), os.O_WRONLY|os.O_TRUNC|os.O_CREATE, 0644)
+func (f *FileStore) validPath(filename string) (string, error) {
+	path, err := filepath.Abs(filepath.Join(f.root, filename))
+	if err != nil {
+		return "", err
+	}
+	if !strings.HasPrefix(path, f.root) {
+		return "", errors.New("operation forbidden")
+	}
+	return path, nil
+}
+
+func (f *FileStore) Put(filename string, v interface{}) error {
+	path, err := f.validPath(filename)
+	if err != nil {
+		return err
+	}
+	fp, err := os.OpenFile(path, os.O_WRONLY|os.O_TRUNC|os.O_CREATE, 0644)
 	defer fp.Close()
 	if err != nil {
 		return err
@@ -42,8 +63,12 @@ func (cs *FileStore) Put(filename string, v interface{}) error {
 	return nil
 }
 
-func (cs *FileStore) Get(filename string, v interface{}) error {
-	buf, err := ioutil.ReadFile(filepath.Join(cs.root, filename))
+func (f *FileStore) Get(filename string, v interface{}) error {
+	path, err := f.validPath(filename)
+	if err != nil {
+		return err
+	}
+	buf, err := ioutil.ReadFile(path)
 	if err != nil {
 		return err
 	}
@@ -53,13 +78,22 @@ func (cs *FileStore) Get(filename string, v interface{}) error {
 	return nil
 }
 
-func (cs *FileStore) Del(filename string) error {
-	return os.RemoveAll(filepath.Join(cs.root, filename))
+func (f *FileStore) Del(filename string) error {
+	path, err := f.validPath(filename)
+	if err != nil {
+		return err
+	}
+	return os.RemoveAll(path)
 }
 
-func (cs *FileStore) List(subDir string) ([]string, error) {
+func (f *FileStore) List(subDir string) ([]string, error) {
+	path, err := f.validPath(subDir)
+	if err != nil {
+		return nil, err
+	}
+
 	var fns []string
-	infos, err := ioutil.ReadDir(filepath.Join(cs.root, subDir))
+	infos, err := ioutil.ReadDir(path)
 	if err != nil {
 		return nil, err
 	}
