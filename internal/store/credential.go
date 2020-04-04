@@ -1,8 +1,8 @@
 package store
 
 type Credential struct {
-	AccessKeyID     string `json:"accessKeyID"`
-	AccessKeySecret string `json:"accessKeySecret"`
+	AccessKeyID     string `json:"accessKeyID" form:"accessKeyID"`
+	AccessKeySecret string `json:"accessKeySecret" form:"accessKeySecret"`
 }
 
 type CredentialStore struct {
