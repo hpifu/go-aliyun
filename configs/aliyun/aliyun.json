@@ -1,6 +1,6 @@
 {
     "service": {
-        "port": ":7060",
+        "port": ":8000",
         "allowOrigins": [
             "https://aliyun.hatlonely.com"
         ],
