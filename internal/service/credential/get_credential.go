@@ -20,7 +20,7 @@ func (s *Service) GETCredential(rid string, c *gin.Context) (interface{}, interf
 
 	credential, err := s.cs.Get(req.Filename)
 	if err != nil {
-		return nil, nil, http.StatusNoContent, nil
+		return req, nil, http.StatusNoContent, nil
 	}
 
 	return req, credential, http.StatusOK, nil

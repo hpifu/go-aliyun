@@ -21,7 +21,7 @@ func (s *Service) GETParameters(rid string, c *gin.Context) (interface{}, interf
 
 	res, err := s.ps.List(req.Category, req.SubCategory)
 	if err != nil {
-		return nil, nil, http.StatusNoContent, nil
+		return req, nil, http.StatusNoContent, nil
 	}
 
 	return req, res, http.StatusOK, nil

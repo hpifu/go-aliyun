@@ -24,7 +24,7 @@ func (ps *ParameterStore) Put(category, subCategory, filename string, request ma
 
 func (ps *ParameterStore) Get(category, subCategory, filename string) (map[string]string, error) {
 	r := map[string]string{}
-	if err := ps.store.Get(filepath.Join(category, subCategory, filename), r); err != nil {
+	if err := ps.store.Get(filepath.Join(category, subCategory, filename), &r); err != nil {
 		return nil, err
 	}
 	return r, nil

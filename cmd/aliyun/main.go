@@ -13,6 +13,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/hpifu/go-aliyun/internal/service/credential"
 	"github.com/hpifu/go-aliyun/internal/service/imm"
+	"github.com/hpifu/go-aliyun/internal/service/parameter"
 	"github.com/hpifu/go-kit/hconf"
 	"github.com/hpifu/go-kit/hdef"
 	"github.com/hpifu/go-kit/henv"
@@ -119,6 +120,10 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+	parameterService, err := parameter.NewService(options.Store.Parameter.Root)
+	if err != nil {
+		panic(err)
+	}
 
 	// init gin
 	gin.SetMode(gin.ReleaseMode)
@@ -140,6 +145,12 @@ func main() {
 	r.GET("/credential/:filename", d.Decorate(credentialService.GETCredential))
 	r.POST("/credential", d.Decorate(credentialService.POSTCredential))
 	r.DELETE("/credential/:filename", d.Decorate(credentialService.DELETECredential))
+
+	r.GET("/parameter/:category/:subCategory", d.Decorate(parameterService.GETParameters))
+	r.GET("/parameter/:category/:subCategory/:filename", d.Decorate(parameterService.GETParameter))
+	r.POST("/parameter/:category/:subCategory", d.Decorate(parameterService.POSTParameter))
+	r.DELETE("/parameter/:category/:subCategory/:filename", d.Decorate(parameterService.DELETECredential))
+
 	r.POST("/imm", d.Decorate(immService.IMM))
 
 	infoLog.Infof("%v init success, port [%v]", os.Args[0], options.Service.Port)

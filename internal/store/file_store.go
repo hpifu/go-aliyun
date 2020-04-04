@@ -43,6 +43,14 @@ func (f *FileStore) Put(filename string, v interface{}) error {
 	if err != nil {
 		return err
 	}
+
+	if _, err := os.Stat(filepath.Dir(path)); err != nil && os.IsNotExist(err) {
+		err = os.MkdirAll(filepath.Dir(path), 0755)
+		if err != nil {
+			return err
+		}
+	}
+
 	fp, err := os.OpenFile(path, os.O_WRONLY|os.O_TRUNC|os.O_CREATE, 0644)
 	defer fp.Close()
 	if err != nil {

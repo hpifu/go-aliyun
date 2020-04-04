@@ -22,7 +22,7 @@ func (s *Service) GETParameter(rid string, c *gin.Context) (interface{}, interfa
 
 	params, err := s.ps.Get(req.Category, req.SubCategory, req.Filename)
 	if err != nil {
-		return nil, nil, http.StatusNoContent, nil
+		return req, nil, http.StatusNoContent, err
 	}
 
 	return req, params, http.StatusOK, nil

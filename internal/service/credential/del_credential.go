@@ -22,7 +22,7 @@ func (s *Service) DELETECredential(rid string, c *gin.Context) (interface{}, int
 
 	err := s.cs.Del(req.Filename)
 	if err != nil {
-		return nil, nil, http.StatusNoContent, nil
+		return req, nil, http.StatusNoContent, nil
 	}
 
 	return req, nil, http.StatusAccepted, nil

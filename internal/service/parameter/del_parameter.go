@@ -7,14 +7,14 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type DELETECredentialReq struct {
+type DELETEParameterReq struct {
 	Category    string `uri:"category" json:"category"`
 	SubCategory string `uri:"subCategory" json:"subCategory"`
 	Filename    string `uri:"filename" json:"filename"`
 }
 
 func (s *Service) DELETECredential(rid string, c *gin.Context) (interface{}, interface{}, int, error) {
-	req := &DELETECredentialReq{}
+	req := &DELETEParameterReq{}
 
 	if err := c.BindUri(req); err != nil {
 		return nil, nil, http.StatusBadRequest, fmt.Errorf("bind failed. err: [%v]", err)
@@ -22,7 +22,7 @@ func (s *Service) DELETECredential(rid string, c *gin.Context) (interface{}, int
 
 	err := s.ps.Del(req.Category, req.SubCategory, req.Filename)
 	if err != nil {
-		return nil, nil, http.StatusNoContent, nil
+		return req, nil, http.StatusNoContent, nil
 	}
 
 	return req, nil, http.StatusAccepted, nil
