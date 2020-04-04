@@ -53,7 +53,7 @@ func MakePopParams(methods string, params map[string]string, accessKeyID string,
 		params["Version"] = "2017-09-06"
 	}
 	if _, ok := params["Timestamp"]; !ok {
-		params["Timestamp"] = time.Now().Format(time.RFC3339)
+		params["Timestamp"] = time.Now().UTC().Format(time.RFC3339)
 	}
 	if _, ok := params["SignatureMethod"]; !ok {
 		params["SignatureMethod"] = "HMAC-SHA1"
@@ -61,7 +61,7 @@ func MakePopParams(methods string, params map[string]string, accessKeyID string,
 	if _, ok := params["SignatureVersion"]; !ok {
 		params["SignatureVersion"] = "1.0"
 	}
-	if _, ok := params["Format"]; !ok {
+	if _, ok := params["SignatureNonce"]; !ok {
 		buf := make([]byte, 8)
 		binary.LittleEndian.PutUint64(buf, rand.Uint64())
 		params["SignatureNonce"] = hex.EncodeToString(buf)

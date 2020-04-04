@@ -105,7 +105,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	immService, err := imm.NewService(options.Store.Parameter.Root)
+	immService, err := imm.NewService(options.Store.Credential.Root)
 	if err != nil {
 		panic(err)
 	}
