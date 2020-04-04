@@ -27,7 +27,7 @@ func (s *Service) POSTCredential(rid string, c *gin.Context) (interface{}, inter
 
 	err := s.cs.Put(req.Filename, req.AccessKeyID, req.AccessKeySecret)
 	if err != nil {
-		return nil, nil, http.StatusNoContent, nil
+		return nil, nil, http.StatusBadRequest, fmt.Errorf("put credential failed. err: [%v]", err)
 	}
 
 	return req, &POSTCredentialRes{

@@ -8,8 +8,8 @@
         "cookieDomain": "aliyun.hatlonely.com"
     },
     "store": {
-        "request": {
-            "root": "data/request"
+        "parameter": {
+            "root": "data/parameter"
         },
         "credential": {
             "root": "data/credential"

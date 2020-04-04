@@ -8,9 +8,9 @@ import (
 )
 
 type GETParameterReq struct {
-	Filename    string `uri:"filename"`
-	Category    string `uri:"category"`
-	SubCategory string `uri:"subCategory"`
+	Category    string `uri:"category" json:"category"`
+	SubCategory string `uri:"subCategory" json:"subCategory"`
+	Filename    string `uri:"filename" json:"filename"`
 }
 
 func (s *Service) GETParameter(rid string, c *gin.Context) (interface{}, interface{}, int, error) {

@@ -37,7 +37,7 @@ type Options struct {
 		Credential struct {
 			Root string `hflag:"usage: root" hdef:"data/credential"`
 		}
-		Request struct {
+		Parameter struct {
 			Root string `hflag:"usage: root" hdef:"data/parameter"`
 		}
 	}
@@ -115,7 +115,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	immService, err := imm.NewService(options.Store.Request.Root)
+	immService, err := imm.NewService(options.Store.Parameter.Root)
 	if err != nil {
 		panic(err)
 	}
