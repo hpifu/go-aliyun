@@ -3,6 +3,12 @@ package main
 import (
 	"context"
 	"fmt"
+	"net/http"
+	"os"
+	"os/signal"
+	"syscall"
+	"time"
+
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/hpifu/go-aliyun/internal/service/credential"
@@ -15,14 +21,6 @@ import (
 	"github.com/hpifu/go-kit/hrule"
 	"github.com/hpifu/go-kit/logger"
 	rotatelogs "github.com/lestrrat-go/file-rotatelogs"
-	"github.com/olivere/elastic/v7"
-	"github.com/sirupsen/logrus"
-	"gopkg.in/sohlich/elogrus.v7"
-	"net/http"
-	"os"
-	"os/signal"
-	"syscall"
-	"time"
 )
 
 // AppVersion name
@@ -43,9 +41,9 @@ type Options struct {
 			Root string `hflag:"usage: root" hdef:"data/request"`
 		}
 	}
-	Es struct {
-		Uri string `hflag:"usage: elasticsearch address"`
-	}
+	//Es struct {
+	//	Uri string `hflag:"usage: elasticsearch address"`
+	//}
 	Logger struct {
 		Info   logger.Options
 		Warn   logger.Options
@@ -99,18 +97,18 @@ func main() {
 	infoLog := logs[0]
 	warnLog := logs[1]
 	accessLog := logs[2]
-	client, err := elastic.NewClient(
-		elastic.SetURL(options.Es.Uri),
-		elastic.SetSniff(false),
-	)
-	if err != nil {
-		panic(err)
-	}
-	hook, err := elogrus.NewAsyncElasticHook(client, "go-tech", logrus.InfoLevel, "go-tech-log")
-	if err != nil {
-		panic(err)
-	}
-	accessLog.Hooks.Add(hook)
+	//client, err := elastic.NewClient(
+	//	elastic.SetURL(options.Es.Uri),
+	//	elastic.SetSniff(false),
+	//)
+	//if err != nil {
+	//	panic(err)
+	//}
+	//hook, err := elogrus.NewAsyncElasticHook(client, "go-aliyun", logrus.InfoLevel, "go-aliyun-log")
+	//if err != nil {
+	//	panic(err)
+	//}
+	//accessLog.Hooks.Add(hook)
 
 	// init services
 	credentialService, err := credential.NewService(options.Store.Credential.Root)

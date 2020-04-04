@@ -2,28 +2,33 @@
     "service": {
         "port": ":7060",
         "allowOrigins": [
-            "https://echo.hatlonely.com"
+            "https://aliyun.hatlonely.com"
         ],
         "cookieSecure": true,
-        "cookieDomain": "echo.hatlonely.com"
+        "cookieDomain": "aliyun.hatlonely.com"
     },
-    "es": {
-        "uri": "http://elasticsearch:9200"
+    "store": {
+        "request": {
+            "root": "data/request"
+        },
+        "credential": {
+            "root": "data/credential"
+        }
     },
     "logger": {
         "info": {
             "formatter": "text",
-            "filename": "log/echo.info",
+            "filename": "log/aliyun.info",
             "maxAge": "24h"
         },
         "warn": {
             "formatter": "text",
-            "filename": "log/echo.warn",
+            "filename": "log/aliyun.warn",
             "maxAge": "24h"
         },
         "access": {
             "formatter": "json",
-            "filename": "log/echo.access",
+            "filename": "log/aliyun.access",
             "maxAge": "24h"
         }
     }
