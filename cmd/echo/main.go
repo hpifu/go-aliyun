@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
-	"github.com/hpifu/go-aliyun/internal/service"
 	"github.com/hpifu/go-aliyun/internal/service/credential"
 	"github.com/hpifu/go-aliyun/internal/service/imm"
 	"github.com/hpifu/go-kit/hconf"
@@ -119,6 +118,9 @@ func main() {
 		panic(err)
 	}
 	immService, err := imm.NewService(options.Store.Request.Root)
+	if err != nil {
+		panic(err)
+	}
 
 	// init gin
 	gin.SetMode(gin.ReleaseMode)
