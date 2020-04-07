@@ -144,6 +144,8 @@ func main() {
 	r.POST("/parameter/:category/:subCategory", d.Decorate(parameterService.POSTParameter))
 	r.DELETE("/parameter/:category/:subCategory/:filename", d.Decorate(parameterService.DELETECredential))
 
+
+	r.GET("/endpoint", d.Decorate(endpointService.GETCategory))
 	r.GET("/endpoint/:category", d.Decorate(endpointService.GETEndpoints))
 	r.POST("/endpoint/:category", d.Decorate(endpointService.POSTEndpoint))
 	r.DELETE("/endpoint/:category", d.Decorate(endpointService.DELETEEndpoint))
